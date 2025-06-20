@@ -22,6 +22,7 @@ module.exports = async function (context, req) {
       body: results,
     };
   } catch (err) {
+    context.log("ERROR:", err);
     context.res = {
       status: 500,
       body: "Database query failed: " + err.message,
