@@ -3,6 +3,8 @@ const { MongoClient } = require("mongodb");
 module.exports = async function (context, req) {
   const uri = process.env.MONGO_URL;
 
+  context.log("Starting connection...");
+
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -11,11 +13,14 @@ module.exports = async function (context, req) {
 
   try {
     await client.connect();
+    context.log("Connected to DB");
 
     const database = client.db("webappdb");
     const collection = database.collection("items");
+    context.log("Querying...");
 
     const results = await collection.find({}).toArray();
+    context.log("Query successful", results);
 
     context.res = {
       status: 200,
@@ -29,5 +34,6 @@ module.exports = async function (context, req) {
     };
   } finally {
     await client.close();
+    context.log("Connection closed");
   }
 };
