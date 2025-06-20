@@ -12,7 +12,7 @@ module.exports = async function (context, req) {
   try {
     await client.connect();
 
-    const database = client.db("cosmosiuapi");
+    const database = client.db("webappdb");
     const collection = database.collection("items");
 
     const results = await collection.find({}).toArray();
