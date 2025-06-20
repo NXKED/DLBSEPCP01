@@ -1,5 +1,32 @@
+const { MongoClient } = require("mongodb");
+
 module.exports = async function (context, req) {
-  context.res = {
-    body: "Hello from nik!",
-  };
+  const uri = process.env.MONGO_URL;
+
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: { version: "1" },
+  });
+
+  try {
+    await client.connect();
+
+    const database = client.db("cosmosiuapi");
+    const collection = database.collection("items");
+
+    const results = await collection.find({}).toArray();
+
+    context.res = {
+      status: 200,
+      body: results,
+    };
+  } catch (err) {
+    context.res = {
+      status: 500,
+      body: "Database query failed: " + err.message,
+    };
+  } finally {
+    await client.close();
+  }
 };
