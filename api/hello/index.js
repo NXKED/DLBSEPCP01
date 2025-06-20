@@ -1,33 +1,13 @@
-const { MongoClient } = require("mongodb");
-
 module.exports = async function (context, req) {
-  const uri = process.env.MONGO_URL;
+  context.log("HTTP trigger function processed a request.");
 
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverApi: { version: "1" },
-  });
+  const name = req.query.name || (req.body && req.body.name);
+  const responseMessage = name
+    ? "Hello, " + name + "."
+    : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
 
-  try {
-    await client.connect();
-
-    const database = client.db("webappdb"); // ✅ must match your CosmosDB DB name
-    const collection = database.collection("items");
-
-    const results = await collection.find({}).toArray();
-
-    context.res = {
-      status: 200,
-      body: results,
-    };
-  } catch (err) {
-    context.log("Error:", err); // helpful log
-    context.res = {
-      status: 500,
-      body: "Database query failed: " + err.message,
-    };
-  } finally {
-    await client.close();
-  }
+  context.res = {
+    // status: 200, /* Defaults to 200 */
+    body: responseMessage,
+  };
 };
