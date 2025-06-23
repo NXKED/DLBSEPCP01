@@ -1,12 +1,19 @@
-const { CosmosClient } = require("@azure/cosmos");
-
-const endpoint = process.env.COSMOS_DB_ENDPOINT;
-const key = process.env.COSMOS_DB_KEY;
-
-const client = new CosmosClient({ endpoint, key });
-
 module.exports = async function (context, req) {
-  context.log("Fetching items");
+  const { CosmosClient } = require("@azure/cosmos");
+
+  const endpoint = process.env.COSMOS_DB_ENDPOINT;
+  const key = process.env.COSMOS_DB_KEY;
+
+  if (!endpoint || !key) {
+    context.log.error("Missing Endpoint or Key");
+    context.res = {
+      status: 500,
+      body: JSON.stringify({ error: "Missing CosmosDB configuration" }),
+    };
+    return;
+  }
+
+  const client = new CosmosClient({ endpoint, key });
 
   try {
     const database = client.database("webappdb");
@@ -22,16 +29,19 @@ module.exports = async function (context, req) {
 
     context.res = {
       status: 200,
-      body: items,
+      body: JSON.stringify(items),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "applications/json",
       },
     };
   } catch (err) {
-    context.log.error("Error querying CosmosDB", err);
+    context.log.error("Database query failed", err);
     context.res = {
-      status: 500,
-      body: "Error querying DB" + err.message,
+      status: 200,
+      body: JSON.stringify({ error: err.message }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
   }
 };
