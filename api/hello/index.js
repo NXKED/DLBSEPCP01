@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 module.exports = async function (context, req) {
-  context.log("MongoDB function triggered");
+  context.log("MongoDB function triggered", uri);
 
   const mongoUrl = process.env.MONGO_URL;
 
@@ -34,8 +34,8 @@ module.exports = async function (context, req) {
   } catch (err) {
     context.log.error("Database query failed", err);
     context.res = {
-      status: 200,
-      body: JSON.stringify({ error: err.message }),
+      status: 500,
+      body: `❌ Internal Error: ${err.message}`,
     };
   } finally {
     await client.close();
