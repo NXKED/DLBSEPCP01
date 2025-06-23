@@ -1,41 +1,46 @@
 const { MongoClient } = require("mongodb");
+
 module.exports = async function (context, req) {
-  context.log("MongoDB function triggered", uri);
-
-  const mongoUrl = process.env.MONGO_URL;
-
-  if (!mongoUrl) {
-    context.log.error("Missing Endpoint or Key");
-    context.res = {
-      status: 500,
-      body: JSON.stringify({ error: "Missing CosmosDB configuration" }),
-    };
-    return;
-  }
-
-  const client = new MongoClient(mongoUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverApi: { version: "1" },
-  });
-
   try {
-    await client.connect();
-    const database = client.db("webappdb");
-    const collection = database.collection("items");
+    context.log("Starting function...");
 
-    const items = await collection.find({}).toArray();
+    const mongoUrl = process.env.MONGO_URL;
+    if (!mongoUrl) throw new Error("MongoDB env variable not set");
+
+    context.log("Using connection string:", mongoUrl);
+
+    const client = new MongoClient(mongoUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverApi: { version: "1" },
+    });
+
+    await client.connect();
+    context.log("COnnected to Mdb");
+
+    const database = client.db("webappdb");
+
+    const items = await database.collection("items").find().toArray();
+
+    context.log(`Fetched ${items.length} items`);
+
+    await client.close();
+    context.log("Connection closed");
 
     context.res = {
       status: 200,
-      headers: { "Content-Type": "application/json" },
       body: items,
     };
   } catch (err) {
-    context.log.error("Database query failed", err);
+    context.log.error("Error caught", err);
     context.res = {
       status: 500,
-      body: `❌ Internal Error: ${err.message}`,
+      body: {
+        message: "Function error",
+        error: error.message,
+        stack: error.stack,
+      },
+      headers: { "Content-Type": "application/json" },
     };
   } finally {
     await client.close();
