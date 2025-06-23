@@ -1,13 +1,37 @@
+const { CosmosClient } = require("@azure/cosmos");
+
+const endpoint = process.env.COSMOS_DB_ENDPOINT;
+const key = process.env.COSMOS_DB_KEY;
+
+const client = new CosmosClient({ endpoint, key });
+
 module.exports = async function (context, req) {
-  context.log("HTTP trigger function processed a request.");
+  context.log("Fetching items");
 
-  const name = req.query.name || (req.body && req.body.name);
-  const responseMessage = name
-    ? "Hello, " + name + "."
-    : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
+  try {
+    const database = client.database("webappdb");
+    const container = database.container("items");
 
-  context.res = {
-    // status: 200, /* Defaults to 200 */
-    body: responseMessage,
-  };
+    const querySpec = {
+      query: "SELECT * FROM c",
+    };
+
+    const { resource: items } = await container.items
+      .query(querySpec)
+      .fetchAll();
+
+    context.res = {
+      status: 200,
+      body: items,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+  } catch (err) {
+    context.log.error("Error querying CosmosDB", err);
+    context.res = {
+      status: 500,
+      body: "Error querying DB" + err.message,
+    };
+  }
 };
