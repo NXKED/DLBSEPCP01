@@ -1,10 +1,10 @@
+const { MongoClient } = require("mongodb");
 module.exports = async function (context, req) {
-  const { CosmosClient } = require("@azure/cosmos");
+  context.log("MongoDB function triggered");
 
-  const endpoint = process.env.COSMOS_DB_ENDPOINT;
-  const key = process.env.COSMOS_DB_KEY;
+  const mongoUrl = process.env.MONGO_URL;
 
-  if (!endpoint || !key) {
+  if (!mongoUrl) {
     context.log.error("Missing Endpoint or Key");
     context.res = {
       status: 500,
@@ -13,35 +13,31 @@ module.exports = async function (context, req) {
     return;
   }
 
-  const client = new CosmosClient({ endpoint, key });
+  const client = new MongoClient(mongoUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: { version: "1" },
+  });
 
   try {
-    const database = client.database("webappdb");
-    const container = database.container("items");
+    await client.connect();
+    const database = client.db("webappdb");
+    const collection = database.collection("items");
 
-    const querySpec = {
-      query: "SELECT * FROM c",
-    };
-
-    const { resource: items } = await container.items
-      .query(querySpec)
-      .fetchAll();
+    const items = await collection.find({}).toArray();
 
     context.res = {
       status: 200,
-      body: JSON.stringify(items),
-      headers: {
-        "Content-Type": "applications/json",
-      },
+      headers: { "Content-Type": "application/json" },
+      body: items,
     };
   } catch (err) {
     context.log.error("Database query failed", err);
     context.res = {
       status: 200,
       body: JSON.stringify({ error: err.message }),
-      headers: {
-        "Content-Type": "application/json",
-      },
     };
+  } finally {
+    await client.close();
   }
 };
