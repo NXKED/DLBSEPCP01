@@ -1,6 +1,8 @@
 const { MongoClient } = require("mongodb");
 
 module.exports = async function (context, req) {
+  let client;
+
   try {
     context.log("Starting function...");
 
@@ -9,7 +11,7 @@ module.exports = async function (context, req) {
 
     context.log("Using connection string:", mongoUrl);
 
-    const client = new MongoClient(mongoUrl, {
+    client = new MongoClient(mongoUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverApi: { version: "1" },
@@ -24,9 +26,6 @@ module.exports = async function (context, req) {
 
     context.log(`Fetched ${items.length} items`);
 
-    await client.close();
-    context.log("Connection closed");
-
     context.res = {
       status: 200,
       body: items,
@@ -37,12 +36,19 @@ module.exports = async function (context, req) {
       status: 500,
       body: {
         message: "Function error",
-        error: error.message,
-        stack: error.stack,
+        error: err.message,
+        stack: err.stack,
       },
       headers: { "Content-Type": "application/json" },
     };
   } finally {
-    await client.close();
+    if (client) {
+      try {
+        await client.close();
+        context.log("MongoDB connection closed");
+      } catch (closeErr) {
+        context.log.error("Error closing connection", closeErr);
+      }
+    }
   }
 };
