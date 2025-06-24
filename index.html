@@ -8,16 +8,16 @@
   <script>
     async function fetchItems() {
       try {
-        const response = await fetch('/api/function');
+        const response = await fetch('/api/hello');
 
         if (!response.ok) {
           const text = await response.text();
-          throw new Error('Server Error ${response.status}: ${text}');
+          throw new Error(`Server Error ${response.status}: ${text}`);
         }
 
         const items = await response.json();
 
-        const list = document.getElementById('item-list');
+        const list = document.getElementById('items-list');
         list.innerHTML = '';
 
         items.forEach(item => {
