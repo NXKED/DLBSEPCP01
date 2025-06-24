@@ -14,7 +14,6 @@ module.exports = async function (context, req) {
     client = new MongoClient(mongoUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverApi: { version: "1" },
     });
 
     await client.connect();
