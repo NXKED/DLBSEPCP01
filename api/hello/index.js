@@ -1,33 +1,36 @@
 const { MongoClient } = require("mongodb");
 
-module.exports = async function (context, req) {
-  let client;
+let cachedClient = null;
+let cachedDb = null;
 
+module.exports = async function (context, req) {
   try {
     context.log("Starting function...");
 
     const mongoUrl = process.env.MONGO_URL;
     if (!mongoUrl) throw new Error("MongoDB env variable not set");
 
-    context.log("Using connection string:", mongoUrl);
+    if (!cachedClient || !cachedDb) {
+      context.log("Kein cached client - Verbinden zur MongoDB...");
+      cachedClient = new MongoClient(mongoUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
 
-    client = new MongoClient(mongoUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    await client.connect();
-    context.log("COnnected to Mdb");
-
-    const database = client.db("webappdb");
+      await cachedClient.connect();
+      cachedDb = cachedClient.db("webappdb");
+      context.log("Verbunden zur cached DB");
+    } else {
+      context.log("Verwende Cached MongoDB");
+    }
 
     // Suche nach titel in DB
     const title = req.query.title;
     const query = title ? { title } : {};
 
-    const items = await database.collection("items").find(query).toArray();
+    const items = await cachedDb.collection("items").find(query).toArray();
 
-    //const items = await database.collection("items").find().toArray();
+    //const items = await cachedDb.collection("items").find().toArray();
 
     context.log(`Fetched ${items.length} items`);
 
@@ -46,14 +49,5 @@ module.exports = async function (context, req) {
       },
       headers: { "Content-Type": "application/json" },
     };
-  } finally {
-    if (client) {
-      try {
-        await client.close();
-        context.log("MongoDB connection closed");
-      } catch (closeErr) {
-        context.log.error("Error closing connection", closeErr);
-      }
-    }
   }
 };
