@@ -21,7 +21,13 @@ module.exports = async function (context, req) {
 
     const database = client.db("webappdb");
 
-    const items = await database.collection("items").find().toArray();
+    // Suche nach titel in DB
+    const title = req.query.title;
+    const query = title ? { title } : {};
+
+    const items = await database.collection("items").find(query).toArray();
+
+    //const items = await database.collection("items").find().toArray();
 
     context.log(`Fetched ${items.length} items`);
 
