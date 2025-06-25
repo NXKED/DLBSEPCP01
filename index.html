@@ -24,13 +24,13 @@
         list.innerHTML = '';
 
         if (data.length === 0) {
-          list.innerHTML = `<li>Keine Einträge gefunden</li>`;
+          list.innerHTML = `<li>Keine Eintraege gefunden</li>`;
           return;
         }
 
         data.forEach(item => {
           const li = document.createElement('li');
-          li.textContent = item.title;
+          li.innerHTML = `<strong>${item.title}</strong>: ${item.description}`;
           list.appendChild(li);
         });
 
