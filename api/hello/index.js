@@ -26,11 +26,9 @@ module.exports = async function (context, req) {
 
     // Suche nach titel in DB
     const title = req.query.title;
-    const query = title ? { title } : {};
+    const query = title ? { title: { $regex: title, $options: "i" } } : {};
 
     const items = await cachedDb.collection("items").find(query).toArray();
-
-    //const items = await cachedDb.collection("items").find().toArray();
 
     context.log(`Fetched ${items.length} items`);
 
