@@ -1,0 +1,10 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "staticWebAppName": { "value": "derSWAName" },
+    "cosmosDbAccountName": { "value": "derCosmosDBName" },
+    "repoUrl": { "value": "https://github.com/user/repo" },
+    "mongoUrl": { "value": "Verbindungsstring" }
+  }
+}

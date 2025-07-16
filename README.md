@@ -7,10 +7,11 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
 1. Azure CLI installieren
 2. Bicep CLI installieren
 3. Bei Azure anmelden
-4. Ressourcengruppe erstellen
+4. Erstelle eine parameters.json Datei aus der Vorlage parameters.sample.json und trage den MongoDB Verbindungsstring und andere Informationen ein
+5. Ressourcengruppe erstellen
    'az group create --name 'XYZ' --location westeurope
-5. Bicep datei bereitstellen
-   
+6. Bicep Datei bereitstellen
+
    'az deployment group create \
     --resource-group 'XYZ' \
     --template-file infrastructure/infra.bicep \
