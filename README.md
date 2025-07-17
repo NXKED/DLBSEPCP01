@@ -9,11 +9,12 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
 3. Bei Azure anmelden
 4. Erstelle eine parameters.json Datei aus der Vorlage parameters.sample.json und trage den MongoDB Verbindungsstring und andere Informationen ein
 5. Ressourcen Gruppe erstellen
+   
    az group create \
    --name "XYZ" \
    --location westeurope
 
-6. Deployment
+7. Deployment
 
    az deployment group create \
    --resource-group "XYZ" \
