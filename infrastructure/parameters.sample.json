@@ -5,6 +5,6 @@
     "staticWebAppName": { "value": "derSWAName" },
     "cosmosDbAccountName": { "value": "derCosmosDBName" },
     "repoUrl": { "value": "https://github.com/user/repo" },
-    "mongoUrl": { "value": "Verbindungsstring" }
+    "mongoUrl": { "value": "Verbindungsstring noch nicht eintragen " }  
   }
 }

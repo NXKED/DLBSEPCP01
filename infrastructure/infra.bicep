@@ -11,12 +11,12 @@ param location string = resourceGroup().location
 param repoUrl string
 
 @description('Branch')
-param branch string = 'main'
+param branch string
 
 @description('Verbindungsstring fuer CosmosDB')
 param mongoUrl string
 
-// Cosmos DB 
+// Cosmos DB ACC
 resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
   name: cosmosDbAccountName
   location: location
@@ -35,10 +35,34 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
   }
 }
 
+
+// MongoDB Database 
+resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-04-15' = {
+  name: '${cosmosDb.name}/webappdb'
+  properties: {}
+}
+
+// MongoDB Collection
+resource cosmosDbCollection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections@2021-04-15' = {
+  name: '${cosmosDbDatabase.name}/items'
+  properties: {
+    resource: {
+      shardKey: {_id: 'Hash'}
+      indexes: []
+    }
+    options: []
+  }
+}
+
+
 // Static Web App SWA 
 resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
   name: staticWebAppName
   location: location
+  sku:{
+    name: 'Free'
+    tier: 'Free'
+  }
   properties: {
     repositoryUrl: repoUrl
     branch: branch
