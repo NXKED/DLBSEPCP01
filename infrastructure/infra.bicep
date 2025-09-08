@@ -38,19 +38,26 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
 
 // MongoDB Database 
 resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-04-15' = {
-  name: '${cosmosDb.name}/webappdb'
-  properties: {}
+  name: 'webappdb'
+  parent: cosmosDb
+  properties: {
+    resource: {
+      id: 'webappdb'
+    }
+  }
 }
 
 // MongoDB Collection
 resource cosmosDbCollection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections@2021-04-15' = {
-  name: '${cosmosDbDatabase.name}/items'
+  name: 'items'
+  parent: cosmosDbDatabase
   properties: {
     resource: {
+      id: 'items'
       shardKey: {_id: 'Hash'}
       indexes: []
     }
-    options: []
+    options: null
   }
 }
 
@@ -76,7 +83,8 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
 
 // App Settings 
 resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-03-01' = {
-  name: '${staticWebApp.name}/config'
+  name: 'config'
+  parent: staticWebApp
   properties: {
     MONGO_URL: mongoUrl
   }
