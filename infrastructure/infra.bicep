@@ -35,6 +35,11 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
     apiProperties: {
       serverVersion: '4.0'
     }
+    capabilities: [
+      {
+        name: 'EnableServerless'
+      }
+    ] 
   }
 }
 
