@@ -23,10 +23,13 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
   kind: 'MongoDB'
   properties: {
     databaseAccountOfferType: 'Standard'
+    enableMultipleWriteLocations: false //bcof availability zone issue
+    enableAutomaticFailover: false // ^^
     locations: [
       {
         locationName: location
         failoverPriority: 0
+        isZoneRedundant: false // ^^
       }
     ]
     apiProperties: {
