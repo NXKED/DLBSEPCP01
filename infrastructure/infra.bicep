@@ -83,7 +83,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
 
 // App Settings 
 resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-03-01' = {
-  name: 'config'
+  name: 'appsettings'
   parent: staticWebApp
   properties: {
     MONGO_URL: mongoUrl
