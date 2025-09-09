@@ -53,6 +53,9 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-preview' = {
 resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-04-15' = {
   name: 'webappdb'
   parent: cosmosDb
+  dependsOn: [
+    cosmosDb
+  ]
   properties: {
     resource: {
       id: 'webappdb'
@@ -64,6 +67,9 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabase
 resource cosmosDbCollection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections@2021-04-15' = {
   name: 'items'
   parent: cosmosDbDatabase
+  dependsOn: [
+    cosmosDbDatabase
+  ]
   properties: {
     resource: {
       id: 'items'
