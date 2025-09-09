@@ -39,6 +39,20 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-preview' = {
       serverVersion: '7.0'
     }
     capacityMode: 'Serverless'
+    enableFreeTier: true
+    capabilities: [
+      {
+        name: 'EnableMongo'
+      }
+    ]
+    backupPolicy: {
+      type: 'Periodic'
+      periodicModeProperties: {
+        backupIntervalInMinutes: 240
+        backupRetentionIntervalInHours: 8
+        backupStorageRedundancy: 'Geo'
+      }
+    }
   }
 }
 
