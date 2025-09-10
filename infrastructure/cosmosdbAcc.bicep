@@ -6,7 +6,7 @@ param location string = resourceGroup().location
 
 
 // Cosmos DB ACC
-resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-preview' = {
+resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   name: cosmosDbAccountName
   location: location
   kind: 'MongoDB'
@@ -27,12 +27,12 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-preview' = {
     apiProperties: {
       serverVersion: '7.0'
     }
-    capacityMode: 'Serverless'
-    enableFreeTier: true
+    enableFreeTier: false
     capabilities: [
       {
         name: 'EnableMongo'
       }
+      {name: 'EnableServerless'}
     ]
   }
 }
