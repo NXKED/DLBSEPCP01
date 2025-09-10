@@ -16,36 +16,8 @@ param branch string
 @description('Verbindungsstring fuer CosmosDB')
 param mongoUrl string
 
-// Cosmos DB ACC
-resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-preview' = {
+resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' existing = {
   name: cosmosDbAccountName
-  location: location
-  kind: 'MongoDB'
-  tags: {
-    'hidden-workload-type': 'Learning'
-  }
-  properties: {
-    databaseAccountOfferType: 'Standard'
-    enableMultipleWriteLocations: false //bcof availability zone issue
-    enableAutomaticFailover: false // ^^
-    locations: [
-      {
-        locationName: location
-        failoverPriority: 0
-        isZoneRedundant: false // ^^
-      }
-    ]
-    apiProperties: {
-      serverVersion: '7.0'
-    }
-    capacityMode: 'Serverless'
-    enableFreeTier: true
-    capabilities: [
-      {
-        name: 'EnableMongo'
-      }
-    ]
-  }
 }
 
 

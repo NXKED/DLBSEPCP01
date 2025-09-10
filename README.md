@@ -14,11 +14,17 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    --name "XYZ" \
    --location westeurope
 
-6. Deployment
+6. Deployment des CosmosDB Account (Warten bis deployed! Kann mehrere Minuten dauern)
 
    az deployment group create \
    --resource-group "XYZ" \
-   --template-file infrastructure/infra.bicep \
+   --template-file infrastructure/cosmosdbAcc.bicep \
    --parameters @infrastructure/parameters.json
 
-7. App Settings mit Mongo-Connection String ergänzen
+7. Connection-String aus Azure in parameters.json ergänzen
+8. Deployment Database, Collection und SWA
+
+   az deployment group create \
+   -- resource-group "XYZ" \
+   -- template-file infrastructure/infra.bicep \
+   -- parameters @infrastructure/parameters.json
