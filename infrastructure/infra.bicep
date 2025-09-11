@@ -21,6 +21,9 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
   name: cosmosDbAccountName
   location: location
   kind: 'MongoDB'
+  tags: {
+    'hidden-workload-type': 'Learning'
+  }
   properties: {
     databaseAccountOfferType: 'Standard'
     locations: [
@@ -39,6 +42,10 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
 resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
   name: staticWebAppName
   location: location
+  sku: {
+    name: 'Free'
+    tier: 'Free'
+  }
   properties: {
     repositoryUrl: repoUrl
     branch: branch
