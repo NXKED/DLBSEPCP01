@@ -63,4 +63,7 @@ resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-03-01' = {
   properties: {
     MONGO_URL: mongoUrl
   }
+  dependsOn: [
+    staticWebApp
+  ]
 }
