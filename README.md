@@ -4,7 +4,7 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
 
 # How to Deploy
 
-1. Azure CLI installieren
+1. Azure CLI installieren (2.72.0, 2.77.0 hat bug bei Verwendung von AZ, Powershell geht)
 2. Bicep CLI installieren
 3. Bei Azure anmelden
 4. Erstelle eine parameters.json Datei aus der Vorlage parameters.sample.json und trage den MongoDB Verbindungsstring und andere Informationen ein
@@ -12,7 +12,7 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    
    az group create \
    --name "XYZ" \
-   --location westeurope
+   --location westus2
 
 7. Deployment
 
