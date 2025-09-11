@@ -16,70 +16,34 @@ param branch string
 @description('Verbindungsstring fuer CosmosDB')
 param mongoUrl string
 
-resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' existing = {
+// Cosmos DB ACC
+resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   name: cosmosDbAccountName
-}
-
-
-// MongoDB Database 
-resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-04-15' = {
-  name: 'webappdb'
-  parent: cosmosDb
-  dependsOn: [
-    cosmosDb
-  ]
-  properties: {
-    resource: {
-      id: 'webappdb'
-    }
-  }
-}
-
-// MongoDB Collection
-resource cosmosDbCollection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections@2021-04-15' = {
-  name: 'items'
-  parent: cosmosDbDatabase
-  dependsOn: [
-    cosmosDbDatabase
-  ]
-  properties: {
-    resource: {
-      id: 'items'
-      shardKey: {_id: 'Hash'}
-      indexes: []
-    }
-    options: null
-  }
-}
-
-
-// Static Web App SWA 
-resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
-  name: staticWebAppName
   location: location
-  sku:{
-    name: 'Free'
-    tier: 'Free'
+  kind: 'MongoDB'
+  tags: {
+    'hidden-workload-type': 'Learning'
   }
   properties: {
-    repositoryUrl: repoUrl
-    branch: branch
-    buildProperties: {
-      appLocation: '/'
-      apiLocation: 'api'
-      outputLocation: ''
+    databaseAccountOfferType: 'Standard'
+    enableMultipleWriteLocations: false //bcof availability zone issue
+    enableAutomaticFailover: false // ^^
+    locations: [
+      {
+        locationName: location
+        failoverPriority: 0
+        isZoneRedundant: false // ^^
+      }
+    ]
+    apiProperties: {
+      serverVersion: '7.0'
     }
+    enableFreeTier: false
+    capabilities: [
+      {
+        name: 'EnableMongo'
+      }
+      {name: 'EnableServerless'}
+    ]
   }
-}
-
-// App Settings 
-resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-03-01' = {
-  name: 'appsettings'
-  parent: staticWebApp
-  properties: {
-    MONGO_URL: mongoUrl
-  }
-  dependsOn: [
-    staticWebApp
-  ]
 }
