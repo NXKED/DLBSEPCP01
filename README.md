@@ -28,3 +28,9 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    -- resource-group "XYZ" \
    -- template-file infrastructure/infra.bicep \
    -- parameters @infrastructure/parameters.json
+
+   Infrastruktur ist nun erstellt.
+9. Code Commit veröffentlicht die Anwendung
+
+
+In neuen Branches alten gitub actions workflow name, branch sowie api Token-Name ändern!
