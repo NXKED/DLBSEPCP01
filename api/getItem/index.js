@@ -28,7 +28,7 @@ module.exports = async function (context, req) {
     const title = req.query.title
     const query = title ? { title: { $regex: title, $options: 'i' } } : {}
 
-    const items = await cachedDb.collection('items').find(query).toArray()
+    let items = await cachedDb.collection('items').find(query).toArray()
 
     // Wenn DB noch nicht mit Daten befuellt
     if (items.length === 0 && !title) {
