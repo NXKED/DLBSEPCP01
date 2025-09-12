@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb')
 const fs = require('fs');
 
-const uri = process.env.MONGO_URL
+let uri = process.env.MONGO_URL
 if (!uri) {
   const params = JSON.parse(fs.readFileSync('infrastructure/parameters.json', 'utf8'));
   uri = params.mongoUrl.value;
