@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb')
 const fs = require('fs')
 
 const params = JSON.parse(
-  fs.readFileSync('infrastructure/parameters.json', 'utf8')
+  fs.readFileSync('../infrastructure/parameters.json', 'utf8')
 )
 const uri = params.mongoUrl.value
 const client = new MongoClient(uri)
