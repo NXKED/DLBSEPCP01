@@ -32,6 +32,9 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
 
    Infrastruktur ist nun erstellt.
 
-10. Code Commit veröffentlicht die Anwendung
+Optional Datenbank mit Testdaten befüllen:
+'MONGO_URL=$(jq -r .mongoUrl.value infrastructure/parameters.json) node seed.js'
+
+11. Code Commit veröffentlicht die Anwendung
 
 In neuen Branches alten gitub actions workflow name, branch sowie api Token-Name ändern!

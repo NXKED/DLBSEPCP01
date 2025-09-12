@@ -35,7 +35,7 @@ module.exports = async function (context, req) {
       context.log('Keine Eintraege in der DB gefunden')
       context.res = {
         status: 200,
-        body: { message: 'Die Datenbank ist leer! ' },
+        body: [],
       }
       return
     }
