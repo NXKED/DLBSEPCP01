@@ -21,8 +21,8 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    --template-file infrastructure/cosmosdbAcc.bicep \
    --parameters @infrastructure/parameters.json
 
-7. Connection-String aus Azure in parameters.json ergänzen (Aus Azure Portal CosmosDB Settings/ConnectionStrings Primary Connection String)
-8. Connection-String in Github Secrets speichern. (AZURE_STATIC_WEB_APPS_API_TOKEN in settings/secrets/actions)
+7. Mongo Connection-String aus Azure in parameters.json ergänzen (CosmosDB/Settings/Connection strings)
+8. SWA-Connection-String in Github Secrets speichern. (AZURE_STATIC_WEB_APPS_API_TOKEN in settings/secrets/actions aus SWA/overview manage deployment token)
 9. Deployment der Database, Collection und SWA:
 
    az deployment group create \
