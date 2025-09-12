@@ -2,9 +2,11 @@ const { MongoClient } = require('mongodb')
 const fs = require('fs')
 
 const params = JSON.parse(
-  fs.readFileSync('../infrastructure/parameters.json', 'utf8')
+  fs.readFileSync('./infrastructure/parameters.json', 'utf8')
 )
-const uri = params.mongoUrl.value
+
+// console.log(params)
+const uri = params.parameters?.mongoUrl?.value
 const client = new MongoClient(uri)
 
 async function seed() {
@@ -16,7 +18,7 @@ async function seed() {
       { title: 'Apfel-Test', description: 'Das ist ein Test-Apfel' },
       { title: 'Banane-Test', description: 'Das ist eine Test-Banane' },
     ])
-    console.log('Db befuellt')
+    console.log('Db wurde befüllt')
   } finally {
     await client.close()
   }
