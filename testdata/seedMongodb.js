@@ -1,11 +1,10 @@
 const { MongoClient } = require('mongodb')
-const fs = require('fs');
+const fs = require('fs')
 
-let uri = process.env.MONGO_URL
-if (!uri) {
-  const params = JSON.parse(fs.readFileSync('infrastructure/parameters.json', 'utf8'));
-  uri = params.mongoUrl.value;
-}
+const params = JSON.parse(
+  fs.readFileSync('infrastructure/parameters.json', 'utf8')
+)
+const uri = params.mongoUrl.value
 const client = new MongoClient(uri)
 
 async function seed() {
