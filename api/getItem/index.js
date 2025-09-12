@@ -31,15 +31,13 @@ module.exports = async function (context, req) {
     let items = await cachedDb.collection('items').find(query).toArray()
 
     // Wenn DB noch nicht mit Daten befuellt
-    if (items.length === 0 && !title) {
-      items = [
-        { title: 'Apfel', description: 'Das ist ein Apfel' },
-        { title: 'Banane', description: 'Das ist eine Banane' },
-        { title: 'Nektarine', description: 'Das ist eine Nektarine' },
-      ]
-      context.log(
-        'Keine Eintraege in der DB gefunden - Beispieldaten fuer Testzwecke'
-      )
+    if (items.length === 0) {
+      context.log('Keine Eintraege in der DB gefunden')
+      context.res = {
+        status: 200,
+        body: { message: 'Die Datenbank ist leer! ' },
+      }
+      return
     }
 
     context.log(`Fetched ${items.length} items`)
