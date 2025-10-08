@@ -14,7 +14,7 @@
       try {
         const title = document.getElementById('searchInput').value;
 
-        const res = await fetch(`/api/getItem?title=${encodeURIComponent(title)}`);
+        const res = await fetch(`/api/getItem?title=${encodeURIComponent(title)}`); // HTTP-Req an Azure Functions
         if (!res.ok) {
           const text = await res.text();
           throw new Error(`Server Error ${res.status}: ${text}`);

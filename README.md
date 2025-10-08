@@ -6,7 +6,7 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
 
 1. Azure CLI installieren
 2. Bicep CLI installieren
-3. Bei Azure anmelden
+3. Bei Azure anmelden (az login)
 4. Erstelle eine parameters.json Datei aus der Vorlage parameters.sample.json und trage Informationen ein (der MongoDB Verbindungsstring kann noch nicht eingetragen werden)
 5. Ressourcen Gruppe erstellen:
 
@@ -22,7 +22,7 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    --parameters @infrastructure/parameters.json
 
 7. Mongo Connection-String aus Azure in parameters.json ergänzen (CosmosDB/Settings/Connection strings)
-8. SWA-Connection-String in Github Secrets speichern. (AZURE_STATIC_WEB_APPS_API_TOKEN in settings/secrets/actions aus SWA/overview manage deployment token)
+8. SWA-API-Token in Github Secrets speichern. (AZURE_STATIC_WEB_APPS_API_TOKEN in settings/secrets/actions aus SWA/overview manage deployment token)
 9. Deployment der Database, Collection und SWA:
 
    az deployment group create \
@@ -33,7 +33,7 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    Infrastruktur ist nun erstellt.
 
 Optional Datenbank mit Testdaten befüllen:
-'MONGO_URL=$(jq -r .mongoUrl.value infrastructure/parameters.json) node seed.js'
+node testdata/seedMongodb.js
 
 11. Code Commit veröffentlicht die Anwendung
 
