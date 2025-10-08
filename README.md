@@ -33,8 +33,8 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
 Infrastruktur ist nun erstellt.
 
 10. Optional Datenbank mit Testdaten befüllen:
-node testdata/seedMongodb.js
+   node testdata/seedMongodb.js
 
 Code Commit veröffentlicht die Anwendung
 
-In neuen Branches alten gitub actions workflow name, branch sowie api Token-Name ändern!
+In neuen Branches muss alter Gitub-Actions workflow name, branch sowie api Token-Name geändert werden!
