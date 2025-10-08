@@ -30,11 +30,11 @@ Resources: Azure CosmosDB for MongoDB, Azure SWA with functions
    -- template-file infrastructure/infra.bicep \
    -- parameters @infrastructure/parameters.json
 
-   Infrastruktur ist nun erstellt.
+Infrastruktur ist nun erstellt.
 
-Optional Datenbank mit Testdaten befüllen:
+10. Optional Datenbank mit Testdaten befüllen:
 node testdata/seedMongodb.js
 
-11. Code Commit veröffentlicht die Anwendung
+Code Commit veröffentlicht die Anwendung
 
 In neuen Branches alten gitub actions workflow name, branch sowie api Token-Name ändern!
